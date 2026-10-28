@@ -1,0 +1,19 @@
+import onemodel.config
+
+ExperimentConfig.data = @DataConfig()
+ExperimentConfig.training = @TrainingConfig()
+ExperimentConfig.evaluation = @EvaluationConfig()
+ExperimentConfig.output_dir = 'outputs'
+
+DataConfig.name = 'example'
+DataConfig.root = 'datasets/processed'
+DataConfig.batch_size = 32
+DataConfig.num_workers = 0
+
+TrainingConfig.seed = 42
+TrainingConfig.epochs = 10
+TrainingConfig.learning_rate = 1e-3
+TrainingConfig.mixed_precision = 'no'
+
+EvaluationConfig.top_k = (5, 10)
+EvaluationConfig.split = 'test'

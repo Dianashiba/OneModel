@@ -1,0 +1,21 @@
+# Wiring template only. Values are smoke-test defaults, not paper hyperparameters.
+include '../base.gin'
+
+import onemodel.data.datasets.exposures
+import onemodel.data.collators.onetrans_v2
+import onemodel.models.onetrans_v2.model
+import onemodel.models.onetrans_v2.objectives
+import onemodel.trainers.onetrans_v2
+import onemodel.evaluation.pipeline
+
+ExperimentConfig.name = 'onetrans_v2'
+ExperimentConfig.model = @OneTransV2
+ExperimentConfig.dataset = @UserWindowDataset
+ExperimentConfig.collator = @OneTransV2Collator
+ExperimentConfig.objective = @onetrans_v2_objective
+ExperimentConfig.trainer = @OneTransV2Trainer
+ExperimentConfig.evaluator = @evaluate_pipeline
+
+OneTransV2.hidden_size = 128
+OneTransV2.num_layers = 2
+OneTransV2.num_heads = 4

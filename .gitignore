@@ -1,0 +1,26 @@
+# Python / local environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Local data and experiment artifacts
+datasets/**
+!datasets/README.md
+outputs/**
+!outputs/README.md
+wandb/
+*.pt
+*.pth
+*.safetensors
+
+# Local machine settings
+.DS_Store
+.env
+.env.*

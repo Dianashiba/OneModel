@@ -1,0 +1,21 @@
+# Wiring template only. Values are smoke-test defaults, not paper hyperparameters.
+include '../base.gin'
+
+import onemodel.data.datasets.exposures
+import onemodel.data.collators.unir2
+import onemodel.models.unir2.model
+import onemodel.models.unir2.objectives
+import onemodel.trainers.unir2
+import onemodel.evaluation.pipeline
+
+ExperimentConfig.name = 'unir2'
+ExperimentConfig.model = @UniR2
+ExperimentConfig.dataset = @ExposureDataset
+ExperimentConfig.collator = @UniR2Collator
+ExperimentConfig.objective = @unir2_objective
+ExperimentConfig.trainer = @UniR2Trainer
+ExperimentConfig.evaluator = @evaluate_pipeline
+
+UniR2.hidden_size = 128
+UniR2.num_layers = 2
+UniR2.num_heads = 4
