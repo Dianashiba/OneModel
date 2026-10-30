@@ -1,5 +1,6 @@
 """Gin configuration shared by training and evaluation entry points."""
 
+import os
 from collections.abc import Callable, Sequence
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -96,7 +97,14 @@ def load_config(path: str | Path, bindings: Sequence[str] = ()) -> ExperimentCon
     gin.clear_config()
     gin.add_config_file_search_path(str(config_path.parent))
     gin.add_config_file_search_path(str(config_path.parent.parent))
-    gin.parse_config_files_and_bindings([str(config_path)], list(bindings), skip_unknown=False)
+    # Gin resolves includes against the process directory. Limit the directory
+    # change to parsing and restore it before constructing any components.
+    original_directory = Path.cwd()
+    try:
+        os.chdir(config_path.parent)
+        gin.parse_config_files_and_bindings([str(config_path)], list(bindings), skip_unknown=False)
+    finally:
+        os.chdir(original_directory)
     experiment = ExperimentConfig()
     experiment.validate()
     return experiment

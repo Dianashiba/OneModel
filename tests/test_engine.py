@@ -4,8 +4,7 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
-
-os.environ.setdefault("ACCELERATE_USE_CPU", "true")
+from unittest import mock
 
 import torch
 from accelerate import Accelerator
@@ -31,6 +30,7 @@ def fixture_objective(output: ModelOutput, batch: dict) -> dict:
 
 
 class EngineTest(unittest.TestCase):
+    @mock.patch.dict(os.environ, {"ACCELERATE_USE_CPU": "true"})
     def test_accumulation_updates_weights_and_checkpoint_loads_for_evaluation(self) -> None:
         model = ScalarFixture()
         trainer = Trainer(

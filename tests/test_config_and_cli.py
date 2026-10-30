@@ -23,6 +23,7 @@ class ConfigAndCLITest(unittest.TestCase):
         env = dict(os.environ)
         env["PYTHONPATH"] = str(ROOT / "src")
         env["PYTHONDONTWRITEBYTECODE"] = "1"
+        env["ACCELERATE_USE_CPU"] = "true"
         with tempfile.TemporaryDirectory() as directory:
             result = subprocess.run(
                 [
@@ -59,6 +60,7 @@ class ConfigAndCLITest(unittest.TestCase):
                     "onemodel.train", recipe, "--dry-run", "--gin", "DataConfig.batch_size = 7"
                 )
                 self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertNotIn("ERROR", result.stderr)
                 summary = json.loads(result.stdout)
                 self.assertEqual(summary["status"], "configuration_valid")
                 self.assertEqual(summary["experiment"], recipe)
@@ -74,10 +76,12 @@ class ConfigAndCLITest(unittest.TestCase):
         )
 
     def test_unknown_model_parameter_is_rejected(self) -> None:
+        original_directory = Path.cwd()
         with self.assertRaises(ValueError):
             load_config(
                 ROOT / "configs/unir2/base.gin", ["UniR2.unknown_parameter = 128"]
             )
+        self.assertEqual(Path.cwd(), original_directory)
 
     def test_real_training_reports_the_unimplemented_model(self) -> None:
         result = self.run_cli("onemodel.train", "unir2")
