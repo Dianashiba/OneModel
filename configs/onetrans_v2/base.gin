@@ -16,6 +16,7 @@ ExperimentConfig.objective = @onetrans_v2_objective
 ExperimentConfig.trainer = @OneTransV2Trainer
 ExperimentConfig.evaluator = @evaluate_pipeline
 
-OneTransV2.hidden_size = 128
-OneTransV2.num_layers = 2
-OneTransV2.num_heads = 4
+OneTransV2.cfg = @OneTransV2Config()
+OneTransV2Config.dim = 128
+OneTransV2Config.layers = 2
+OneTransV2Config.heads = 4

@@ -88,6 +88,12 @@ class ConfigAndCLITest(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("Implement UniR2", result.stderr)
 
+    def test_onetrans_recipe_constructs_model_from_cfg(self) -> None:
+        experiment = load_config(ROOT / "configs/onetrans_v2/base.gin")
+        model = experiment.model()
+        self.assertEqual(model.cfg.dim, 128)
+        self.assertEqual(len(model.blocks), 2)
+
     def test_real_evaluation_requires_checkpoint(self) -> None:
         result = self.run_cli("onemodel.evaluate", "unir2")
         self.assertEqual(result.returncode, 2)
